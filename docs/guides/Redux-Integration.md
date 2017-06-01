@@ -12,7 +12,12 @@ const AppNavigator = StackNavigator(AppRouteConfigs);
 const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login'));
 
 const navReducer = (state = initialState, action) => {
-  const nextState = AppNavigator.router.getStateForAction(action, state);
+  try {
+    const nextState = AppNavigator.router.getStateForAction(action, state);
+  }
+  catch (e) {
+    console.error(e);
+  }
 
   // Simply return the original `state` if `nextState` is null or undefined.
   return nextState || state;
@@ -20,7 +25,7 @@ const navReducer = (state = initialState, action) => {
 
 const appReducer = combineReducers({
   nav: navReducer,
-  ...
+  // ...
 });
 
 class App extends React.Component {
@@ -35,7 +40,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  nav: state.nav
+  nav: state.nav,
+  dispatch: state.dispatch
 });
 
 const AppWithNavigationState = connect(mapStateToProps)(App);
